@@ -1,6 +1,6 @@
-# FuzzEverything/Strings - Fast-Agent Implementation
+# Strings - A generic agentic engineering framework
 
-This repository demonstrates a production-grade AI agent system built using the fast-agent library and Model Context Protocol (MCP). It follows modern Python development practices with comprehensive type safety, structured workflows, and secure configuration management.
+This project demonstrates building AI agent systems using fast-agent and the SPARC methodology. It provides working examples of agent patterns, workflows, and MCP integrations that can be adapted for your own projects.
 
 ## Summary
 
