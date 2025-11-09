@@ -1,0 +1,27 @@
+# Default model for all agents
+default_model: "anthropic.claude-sonnet-4-0"
+
+# MCP Server configurations
+mcp:
+  servers:
+    # STDIO server example
+    filesystem:
+      command: "npx"
+      args: ["@modelcontextprotocol/server-filesystem", "."]
+      env:
+        ENVIRONMENT: "development"
+      # Filter available tools
+      tools:
+        filesystem: ["read_file", "write_file", "list_directory"]
+
+    # Prompt server for templated prompts
+    prompts:
+      command: "uv"
+      args: ["run", "prompt-server", "./prompts/templates"]
+
+# Provider-specific configurations
+anthropic:
+  api_key: "${ANTHROPIC_API_KEY}"
+
+openai:
+  api_key: "${OPENAI_API_KEY}"

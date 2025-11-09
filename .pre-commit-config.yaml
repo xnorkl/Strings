@@ -1,0 +1,19 @@
+repos:
+  - repo: https://github.com/PyCQA/prospector
+    rev: 1.10.0
+    hooks:
+      - id: prospector
+        additional_dependencies: [pylint, pycodestyle, mccabe]
+  - repo: https://github.com/opengrep/opengrep
+    rev: v0.5.0
+    hooks:
+      - id: opengrep
+        args: [--config, opengrep.yaml]
+  - repo: local
+    hooks:
+      - id: custom-security-check
+        name: Custom Security Check
+        entry: python -m scripts.security_check
+        language: python
+        pass_filenames: false
+        files: \.(py|yaml|yml|json|toml)$

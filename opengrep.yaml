@@ -1,0 +1,71 @@
+# OpenGrep Security Rules Configuration
+# This file defines security patterns to scan for in the codebase
+
+rules:
+  # Python-specific security rules
+  - name: "hardcoded-api-key"
+    pattern: "(?i)api[_-]?key[^a-zA-Z0-9]|=.*['\"][A-Za-z0-9]{32,}['\"]"
+    severity: "high"
+    description: "Hardcoded API key detected"
+    
+  - name: "insecure-ssl-context"
+    pattern: "ssl\.create_default_context|ssl\.CERT_NONE|ssl\.CERT_OPTIONAL"
+    severity: "medium"
+    description: "Insecure SSL context configuration"
+    
+  - name: "insecure-crypto"
+    pattern: "hashlib\.md5|hashlib\.sha1|hashlib\.sha|hashlib\.new\(['\"]md5['\"]\)|hashlib\.new\(['\"]sha1['\"]\)"
+    severity: "high"
+    description: "Insecure cryptographic algorithm detected"
+    
+  - name: "sql-injection-vulnerability"
+    pattern: "cursor\.execute\([^)]*\\+[^)]*\)|cursor\.execute\([^)]*f\"[^)]*\"[^)]*\)"
+    severity: "critical"
+    description: "Potential SQL injection vulnerability"
+    
+  - name: "command-injection"
+    pattern: "subprocess\.call\([^)]*\\+[^)]*\)|subprocess\.run\([^)]*\\+[^)]*\)|os\.system\([^)]*\\+[^)]*\)"
+    severity: "critical"
+    description: "Potential command injection vulnerability"
+    
+  - name: "hardcoded-password"
+    pattern: "(?i)password[^a-zA-Z0-9]|=.*['\"][A-Za-z0-9!@#$%^&*()_+]{8,}['\"]"
+    severity: "high"
+    description: "Hardcoded password detected"
+    
+  - name: "debug-statements"
+    pattern: "import pdb|import ipdb|import ipdb;|pdb\.set_trace\(\)|import browser;pdb;pdb\.set_trace\(\)"
+    severity: "low"
+    description: "Debug statement detected"
+    
+  - name: "private-keys"
+    pattern: "-----BEGIN (RSA|EC|OPENSSH) PRIVATE KEY-----|-----END (RSA|EC|OPENSSH) PRIVATE KEY-----"
+    severity: "critical"
+    description: "Private key detected in code"
+    
+  - name: "jwt-without-validation"
+    pattern: "jwt\.decode\([^)]*, None|jwt\.decode\([^)]*, None[^)]*\)|jwt\.decode\([^)]*, options={'verify_signature': False"
+    severity: "high"
+    description: "JWT without proper signature validation"
+    
+scanning:
+  include:
+    - "**/*.py"
+    - "**/*.yaml"
+    - "**/*.yml"
+    - "**/*.json"
+    - "**/*.toml"
+    - "**/*.env"
+    - "**/Dockerfile"
+    - "**/docker-compose.yml"
+  exclude:
+    - "node_modules/**/*"
+    - ".venv/**/*"
+    - ".git/**/*"
+    - "**/__pycache__/**/*"
+    - "**/*.pyc"
+    - "dist/**/*"
+    - "build/**/*"
+    - ".tox/**/*"
+    - ".eggs/**/*"
+    - "*.egg-info/**/*"
