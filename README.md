@@ -38,9 +38,12 @@ project/
 │       └── settings.py     # Application settings with validation
 ├── prompts/                # Prompt templates
 │   └── analyzer.md         # Example prompt template
+├── scripts/                # Utility scripts
+│   └── security_check.py   # Security validation script
 ├── tests/                  # Test files
 │   └── test_agents.py      # Agent system tests
-└── README.md
+├── README.md
+└── USAGE.md files          # Detailed usage in respective directories
 ```
 
 ## Dependencies & Tools
@@ -54,8 +57,12 @@ project/
 - **prospector**: Static code analysis aggregating multiple tools
 - **opengrep**: SAST engine to find security issues in code
 - **pre-commit**: Git hooks framework to run checks on commit
+- **GitHub CLI (gh)**: Command-line tool for GitHub operations and PR management
+- **CodeRabbit**: AI-powered code review and development assistance platform
 
 ## Usage
+
+This framework is designed to apply the SPARC methodology (Self-critique, Planning, Action, Reflection) to agent development for both new and existing projects:
 
 ### Prerequisites
 
@@ -108,37 +115,30 @@ project/
    uv run python -m src.agents.evaluator_optimizer
    ```
 
-### Development
+### Applying to New Projects
 
-1. **Code Formatting:**
-   ```bash
-   uv run ruff format .
-   ```
+To apply this framework to a new project:
 
-2. **Linting:**
-   ```bash
-   uv run ruff check . --fix
-   ```
+1. Copy the project structure as a template
+2. Modify `fastagent.config.yaml` to match your server requirements
+3. Create new agents in `src/agents/` following the patterns
+4. Define new prompt templates in `prompts/`
+5. Add appropriate tests in `tests/`
 
-3. **Type Checking:**
-   ```bash
-   uv run mypy src/
-   ```
+### Applying to Existing Projects
 
-4. **Running Tests:**
-   ```bash
-   uv run pytest
-   ```
+To integrate this framework into an existing project:
 
-### Adding New Agents
+1. Add the fast-agent dependencies to your existing project
+2. Gradually introduce agent patterns starting with simple tasks
+3. Use the evaluator-optimizer pattern to improve existing functionality
+4. Leverage MCP servers to extend capabilities of your existing system
 
-To create a new agent following best practices:
-
-1. Create a new file in `src/agents/` (e.g., `new_agent.py`)
-2. Define your Pydantic models for structured output
-3. Create your agent with proper type hints and configuration
-4. Add to the FastAgent instance with appropriate decorators
-5. Write tests in the `tests/` directory
+Detailed usage examples for each directory are available in corresponding USAGE.md files:
+- [prompts/USAGE.md](./prompts/USAGE.md) - Prompt templates usage
+- [scripts/USAGE.md](./scripts/USAGE.md) - Script utilities usage
+- [src/agents/USAGE.md](./src/agents/USAGE.md) - Agent development usage
+- [tests/USAGE.md](./tests/USAGE.md) - Testing usage
 
 ## Security Best Practices
 
@@ -181,34 +181,6 @@ docker build -t fast-agent-system .
 docker run -p 8080:8080 -e ANTHROPIC_API_KEY=your-key fast-agent-system
 ```
 
-## Security Checks
-
-The project includes automated security checks using:
-
-- **SAST (Static Application Security Testing)**: Using OpenGrep to scan for security vulnerabilities in the code
-- **DAST (Dynamic Application Security Testing)**: Using Prospector for static code analysis and code quality checks
-- **Pre-commit Hooks**: Automated checks run before each commit to ensure code quality and security
-
-Security rules are configured in `opengrep.yaml` and include detection for:
-- Hardcoded API keys and passwords
-- Insecure SSL configurations
-- Weak cryptographic algorithms
-- Potential SQL and command injection vulnerabilities
-- Private key exposure
-- JWT validation issues
-
-To run security checks manually:
-```bash
-# Run all pre-commit checks (includes security)
-pre-commit run --all-files
-
-# Run prospector only
-uv run prospector
-
-# Run opengrep only (if installed separately)
-opengrep --config opengrep.yaml
-```
-
 ## Contributing
 
 1. Follow the type safety practices outlined in the codebase
@@ -217,6 +189,8 @@ opengrep --config opengrep.yaml
 4. Document complex logic with clear comments
 5. Maintain consistent code formatting using ruff
 6. Ensure all security checks pass before submitting pull requests
+
+For detailed development workflows with GitHub CLI and CodeRabbit, see the USAGE.md files in each directory.
 
 ## Resources
 
